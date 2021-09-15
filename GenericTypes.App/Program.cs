@@ -8,10 +8,10 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
-            //TestListBase();
-            //TestListBase2();
-            //TestListBase3();
-            //SetTests();
+            TestListBase();
+            TestListBase2();
+            TestListBase3();
+            SetTests();
             PowerSetTests();
             CarthesianSetTests();
         }

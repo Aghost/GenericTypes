@@ -54,7 +54,7 @@ namespace GenericTypes.Test
 
             glbstr.Resize(4);
 
-            // Assert
+            // Act and Assert
             Assert.Equal(4, glbstr.Capacity);
             Assert.Equal(4, glbstr.Size);
 
@@ -76,13 +76,6 @@ namespace GenericTypes.Test
 
             GenericListBase<string> glbstr = new(strarr);
             GenericListBase<string> glbstr2 = new(strarr2);
-
-            /*
-            GenericListBase<string> glbstr3a = glbstr2 - glbstr;
-            string[] strarr3b = new string[] { "six", null, null, null };
-            GenericListBase<string> glbstr3b = new(strarr3b);
-            Assert.Equal(glbstr3a, glbstr3b);
-            */
 
             GenericListBase<string> glbstr3a = glbstr2 - glbstr;
             string[] strarr3b = new string[] { "six" };

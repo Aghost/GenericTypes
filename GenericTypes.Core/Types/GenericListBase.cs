@@ -35,9 +35,8 @@ namespace GenericTypes.Core.Types
         }
 
         public void Add(T element) {
-            if (_Size == _Capacity) {
+            if (_Size == _Capacity)
                 Resize();
-            }
 
             _Data[_Size] = element;
             _Size++;
@@ -53,10 +52,6 @@ namespace GenericTypes.Core.Types
         }
 
         public bool Contains(T element) {
-            if (IsEmpty) {
-                return false;
-            }
-
             for (int i = 0; i < Size; i++) {
                 if (_Data[i].Equals(element)) {
                     return true;
@@ -106,6 +101,7 @@ namespace GenericTypes.Core.Types
         public T[] ToArray() {
             T[] tmp = new T[_Capacity];
             Array.Copy(_Data, tmp, _Capacity);
+
             return tmp;
         }
 
@@ -172,10 +168,9 @@ namespace GenericTypes.Core.Types
 
             foreach (T item in lhs) {
                 // uncomment to only add unique items!
-                //if (!ReferenceEquals(item, null) && !newlist.Contains(item) && !rhs.Contains(item)) {
-                if (!ReferenceEquals(item, null) && !rhs.Contains(item)) {
+                //if (!newlist.Contains(item) && !rhs.Contains(item)) {
+                if (!rhs.Contains(item))
                     newlist.Add(item);
-                }
             }
 
             return newlist;
@@ -187,9 +182,8 @@ namespace GenericTypes.Core.Types
             GenericListBase<T> newlist = new();
 
             foreach (T item in rhs) {
-                if (lhs.Contains(item)) {
+                if (lhs.Contains(item))
                     newlist.Add(item);
-                }
             }
 
             return newlist;
@@ -201,7 +195,7 @@ namespace GenericTypes.Core.Types
                 return false;
 
             foreach (T item in lhs) {
-                if (!ReferenceEquals(item, default(T)) && !rhs.Contains(item)) 
+                if (!rhs.Contains(item))
                     return false;
             }
 
@@ -214,7 +208,7 @@ namespace GenericTypes.Core.Types
                 return false;
 
             foreach (T item in rhs) {
-                if (!ReferenceEquals(item, default(T)) && !lhs.Contains(item)) 
+                if (!lhs.Contains(item))
                     return false;
             }
 
@@ -249,9 +243,8 @@ namespace GenericTypes.Core.Types
                     tmpresult.Add(lht);
 
                     foreach(T rht in rhs) {
-                        if (!tmpresult.Contains(rht) && rht != null) {
+                        if (!tmpresult.Contains(rht))
                             tmpresult.Add(rht);
-                        }
                     }
 
                     if (tmpresult.Size > 0)
