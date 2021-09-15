@@ -86,39 +86,37 @@ namespace GenericTypes.Test
             string[] strarr4b = new string[] { "three", null, null, null };
             GenericListBase<string> glbstr4b = new(strarr4b);
             Assert.Equal(glbstr4a, glbstr4b);
-
-
-            //foreach(var v in glbstr) { WriteLine($"{v}"); }
-
         }
 
-        /*
         [Fact]
         public void GenericListBaseComparatorMethodsTests() {
-            int[] iarr = new int[] { 1, 2 };
+            int[] iarr = new int[] { 1, 2, 3 };
             GenericListBase<int> glbi = new(iarr);
             GenericListBase<int> glbi2 = new(glbi);
 
-            glbi.Add(3);
-            glbi2.Add(3);
             Assert.Equal(glbi, glbi2);
 
-            glbi2.Add(4);
-            bool subset = glbi < glbi2;
+            bool isSubset = glbi < glbi2;
+            bool isSuperset = glbi > glbi2;
+
+            bool isSubset2 = glbi2 < glbi;
+            bool isSuperset2 = glbi2 > glbi;
+
             bool expected = true;
-            Assert.Equal(expected, subset);
+            Assert.Equal(expected, isSubset);
+            Assert.Equal(expected, isSuperset);
 
-            bool superset = glbi > glbi2;
-            expected = false;
-            Assert.Equal(expected, superset);
+            Assert.Equal(expected, isSubset2);
+            Assert.Equal(expected, isSuperset2);
 
-            glbi.Add(3);
-            glbi.Add(8);
-            glbi.Add(9);
-            superset = glbi < glbi2;
             expected = false;
-            Assert.Equal(expected, superset);
+            
+            GenericListBase<int> glbi3 = new();
+
+            bool isSuperset3 = glbi3 > glbi2;
+            Assert.Equal(expected, isSuperset3);
         }
+        /*
         */
     }
 }

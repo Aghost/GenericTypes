@@ -147,6 +147,7 @@ namespace GenericTypes.Core.Types
         }
 
         public static bool operator ==(GenericListBase<T> lhs, Object rhs) => lhs.Equals(rhs);
+
         public static bool operator !=(GenericListBase<T> lhs, Object rhs) => !(lhs == rhs);
 
         public static GenericListBase<T> operator +(GenericListBase<T> lhs, GenericListBase<T> rhs) {
@@ -166,6 +167,7 @@ namespace GenericTypes.Core.Types
             GenericListBase<T> newlist = new();
 
             foreach (T item in lhs) {
+                // uncomment to only add unique items!
                 //if (!ReferenceEquals(item, null) && !newlist.Contains(item) && !rhs.Contains(item)) {
                 if (!ReferenceEquals(item, null) && !rhs.Contains(item)) {
                     newlist.Add(item);
@@ -175,33 +177,30 @@ namespace GenericTypes.Core.Types
             return newlist;
         }
 
+
         //public static GenericListBase<T> operator /(GenericList<T> lhs, GenericList<T> rhs) { }
-
         public static bool operator <(GenericListBase<T> lhs, GenericListBase<T> rhs) {
-            var def = default(T);
-            // is (lhs) a subset of (rhs) ?
+            if (lhs.Size > rhs.Size)
+                return false;
+
             foreach (T item in lhs) {
-                //if (ReferenceEquals(item, null)) { continue; }
-                //T tmp = item ?? item;
-                if (!ReferenceEquals(item, def) && !rhs.Contains(item)) 
-                    return true;
+                if (!ReferenceEquals(item, default(T)) && !rhs.Contains(item)) 
+                    return false;
             }
 
-            return false;
+            return true;
         }
 
-        public static bool operator >(GenericListBase<T> lhs, GenericListBase<T> rhs) => !(lhs < rhs);
-            /*
         public static bool operator >(GenericListBase<T> lhs, GenericListBase<T> rhs) {
-            var def = default(T);
-            // is (lhs) a superset of (rhs) ?
-            foreach(T item in rhs) {
-                if (!ReferenceEquals(item, def) && !lhs.Contains(item))
-                    return true;
+            if (rhs.Size > lhs.Size)
+                return false;
+
+            foreach (T item in rhs) {
+                if (!ReferenceEquals(item, default(T)) && !lhs.Contains(item)) 
+                    return false;
             }
 
-            return false;
+            return true;
         }
-        */
     }
 }
