@@ -8,12 +8,27 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
+            /*
             TestListBase();
             TestListBase2();
             TestListBase3();
             SetTests();
             PowerSetTests();
             CarthesianSetTests();
+            */
+            LinkedListTests();
+        }
+
+        static void LinkedListTests() {
+            GenericLinkedList<string> gll = new();
+            gll.AddHead("banaan");
+            gll.AddHead("appel");
+            gll.AddHead("gordijn");
+            //gll.InsertAt("paard", 2);
+
+            foreach(var v in gll) {
+                WriteLine($"{v}");
+            }
         }
 
         static void CarthesianSetTests() {
