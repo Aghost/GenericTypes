@@ -34,7 +34,6 @@ namespace GenericTypes.Core.Types
             _Size = rhs._Size;
         }
 
-
         public void Add(T element) {
             if (_Size == _Capacity) {
                 Resize();
@@ -54,6 +53,10 @@ namespace GenericTypes.Core.Types
         }
 
         public bool Contains(T element) {
+            if (IsEmpty) {
+                return false;
+            }
+
             for (int i = 0; i < Size; i++) {
                 if (_Data[i].Equals(element)) {
                     return true;
@@ -147,11 +150,8 @@ namespace GenericTypes.Core.Types
         public static bool operator !=(GenericListBase<T> lhs, Object rhs) => !(lhs == rhs);
 
         public static GenericListBase<T> operator +(GenericListBase<T> lhs, GenericListBase<T> rhs) {
-            if (lhs.Size == 0)
-                return rhs;
-
-            if (rhs.Size == 0)
-                return lhs;
+            if (lhs.Size == 0) { return rhs; }
+            if (rhs.Size == 0) { return lhs; }
 
             GenericListBase<T> newList = new(lhs.ToArray());
             newList.Add(rhs.ToArray());
@@ -165,31 +165,43 @@ namespace GenericTypes.Core.Types
 
             GenericListBase<T> newlist = new();
 
-            //bool hasItem = false;
-
-            // werkt bijna
-            if (lhs.Size < rhs.Size) {
-                for (int i = 0; i < lhs.Size; i++) {
-                    if (rhs.Contains(lhs.Data[i])) {
-                        newlist.Add(lhs.Data[i]);
-                    }
-                }
-            } else {
-                for (int i = 0; i < rhs.Size; i++) {
-                    if (lhs.Contains(rhs.Data[i])) {
-                        newlist.Add(rhs.Data[i]);
-                    }
+            foreach (T item in lhs) {
+                //if (!ReferenceEquals(item, null) && !newlist.Contains(item) && !rhs.Contains(item)) {
+                if (!ReferenceEquals(item, null) && !rhs.Contains(item)) {
+                    newlist.Add(item);
                 }
             }
 
             return newlist;
         }
+
         //public static GenericListBase<T> operator /(GenericList<T> lhs, GenericList<T> rhs) { }
 
-        //public static GenericListBase<T> operator <(GenericList<T> lhs, GenericList<T> rhs) {
-            // is (lhs) a subset of (rhs) ?  }
+        public static bool operator <(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+            var def = default(T);
+            // is (lhs) a subset of (rhs) ?
+            foreach (T item in lhs) {
+                //if (ReferenceEquals(item, null)) { continue; }
+                //T tmp = item ?? item;
+                if (!ReferenceEquals(item, def) && !rhs.Contains(item)) 
+                    return true;
+            }
 
-        //public static GenericListBase<T> operator >(GenericList<T> lhs, GenericList<T> rhs) {
-            // is (lhs) a superset of (rhs) ?  }
+            return false;
+        }
+
+        public static bool operator >(GenericListBase<T> lhs, GenericListBase<T> rhs) => !(lhs < rhs);
+            /*
+        public static bool operator >(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+            var def = default(T);
+            // is (lhs) a superset of (rhs) ?
+            foreach(T item in rhs) {
+                if (!ReferenceEquals(item, def) && !lhs.Contains(item))
+                    return true;
+            }
+
+            return false;
+        }
+        */
     }
 }

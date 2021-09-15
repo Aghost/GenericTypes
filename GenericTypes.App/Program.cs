@@ -8,8 +8,25 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
-            TestListBase();
-            TestListBase2();
+            //TestListBase();
+            //TestListBase2();
+            TestListBase3();
+        }
+
+        static void TestListBase3() {
+            string[] strarr = new string[] { "one", "two", "three", "four", "five" };
+            GenericListBase<string> glbs = new(strarr);
+            GenericListBase<string> glbs2 = new(glbs);
+
+            WriteLine(glbs == glbs2);
+            glbs.Add("six");
+            glbs2.Add("six");
+            glbs2.Add("seven");
+            glbs2.Add("eight");
+
+            foreach(var item in glbs2 - glbs) {
+                WriteLine($"{item}");
+            }
         }
 
         static void TestListBase2() {
@@ -17,10 +34,8 @@ namespace GenericTypes.App
             GenericListBase<string> glbs = new(strarr);
 
             WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
-
             if (glbs.Contains("five", out int position)) { WriteLine($"five @ {position}"); }
             if (!glbs.Contains("six")) { WriteLine($"glbs does not contain six"); }
-
             WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
         }
 
@@ -85,6 +100,26 @@ namespace GenericTypes.App
             WriteLine("---result");
             GenericListBase<string> glbsminus = glbs - glbcombined;
             foreach(string s in glbsminus) { WriteLine($"{s}"); }
+
+            if (glbsminus < glbcombined) {
+                WriteLine($"glbmins < glbcombined");
+            } else {
+                WriteLine($"not!");
+                foreach(string s in glbsminus) { WriteLine($"{s}"); }
+                foreach(string s in glbcombined) { WriteLine($"{s}"); }
+            }
+
+            GenericListBase<int> glbi2 = new(glbi);
+            WriteLine(glbi == glbi2);
+            glbi2.Add(new int[] { 5, 6, 7, 8 });
+            WriteLine(glbi == glbi2);
+            WriteLine(glbi < glbi2);
+            WriteLine(glbi > glbi2);
+
+            foreach(var v in glbi) { Write($"{v} "); }
+            WriteLine();
+            glbi.Add(22);
+            foreach(var v in glbi2) { Write($"{v} "); }
         }
 
     }

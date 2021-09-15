@@ -68,5 +68,57 @@ namespace GenericTypes.Test
             Assert.Equal(2, glbstr.Capacity);
             Assert.Equal(2, glbstr.Size);
         }
+
+        [Fact]
+        public void GenericListBaseMinus() {
+            string[] strarr = new string[] { "one", "two", "three" };
+            string[] strarr2 = new string[] { "one", "two", "six" };
+
+            GenericListBase<string> glbstr = new(strarr);
+            GenericListBase<string> glbstr2 = new(strarr2);
+
+            GenericListBase<string> glbstr3a = glbstr2 - glbstr;
+            string[] strarr3b = new string[] { "six", null, null, null };
+            GenericListBase<string> glbstr3b = new(strarr3b);
+            Assert.Equal(glbstr3a, glbstr3b);
+
+            GenericListBase<string> glbstr4a = glbstr - glbstr2;
+            string[] strarr4b = new string[] { "three", null, null, null };
+            GenericListBase<string> glbstr4b = new(strarr4b);
+            Assert.Equal(glbstr4a, glbstr4b);
+
+
+            //foreach(var v in glbstr) { WriteLine($"{v}"); }
+
+        }
+
+        /*
+        [Fact]
+        public void GenericListBaseComparatorMethodsTests() {
+            int[] iarr = new int[] { 1, 2 };
+            GenericListBase<int> glbi = new(iarr);
+            GenericListBase<int> glbi2 = new(glbi);
+
+            glbi.Add(3);
+            glbi2.Add(3);
+            Assert.Equal(glbi, glbi2);
+
+            glbi2.Add(4);
+            bool subset = glbi < glbi2;
+            bool expected = true;
+            Assert.Equal(expected, subset);
+
+            bool superset = glbi > glbi2;
+            expected = false;
+            Assert.Equal(expected, superset);
+
+            glbi.Add(3);
+            glbi.Add(8);
+            glbi.Add(9);
+            superset = glbi < glbi2;
+            expected = false;
+            Assert.Equal(expected, superset);
+        }
+        */
     }
 }
