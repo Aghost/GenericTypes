@@ -8,14 +8,67 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
-            TestListBase();
-            TestListBase2();
-            TestListBase3();
-            SetTests();
+            //TestListBase();
+            //TestListBase2();
+            //TestListBase3();
+            //SetTests();
             PowerSetTests();
+            CarthesianSetTests();
+        }
+
+        static void CarthesianSetTests() {
+            // STR
+            string[] strarr = new string[] { "one", "two", "three" };
+            string[] strarr2 = new string[] { "two", "three", "four" };
+            GenericListBase<string> glbs = new(strarr);
+            GenericListBase<string> glbs2 = new(strarr2);
+
+            Write($"set A: ");
+            foreach(var v in strarr) { Write($"{v} "); }
+            WriteLine();
+            Write($"set B: ");
+            foreach(var v in strarr2) { Write($"{v} "); }
+            WriteLine();
+            WriteLine();
+
+            GenericListBase<GenericListBase<string>> glbglb = new(glbs * glbs2);
+
+            WriteLine("Carthesian Sets: ");
+            foreach(var v in glbglb) {
+                foreach(string str in v) {
+                    Write($"\t{str} ");
+                }
+                WriteLine();
+            }
+
+            WriteLine();
+            // INT
+            int[] iarr = new int[] { 1,2,3 };
+            int[] iarr2 = new int[] { 4,5,6 };
+            GenericListBase<int> glbi = new(iarr);
+            GenericListBase<int> glbi2 = new(iarr2);
+
+            Write($"set A: ");
+            foreach(var v in iarr) { Write($"{v} "); }
+            WriteLine();
+            Write($"set B: ");
+            foreach(var v in iarr2) { Write($"{v} "); }
+            WriteLine();
+            WriteLine();
+
+            GenericListBase<GenericListBase<int>> glbglbi = new(glbi * glbi2);
+
+            WriteLine("Carthesian Sets: ");
+            foreach(var v in glbglbi) {
+                foreach(int i in v) {
+                    Write($"\t{i} ");
+                }
+                WriteLine();
+            }
         }
 
         static void PowerSetTests() {
+            // STR
             string[] strarr = new string[] { "one", "two", "three" };
             string[] strarr2 = new string[] { "two", "three", "four" };
             GenericListBase<string> glbs = new(strarr);
@@ -25,8 +78,24 @@ namespace GenericTypes.App
 
             foreach(var v in glbglb) {
                 foreach(string str in v) {
-                    WriteLine($"{str}");
+                    Write($"{str} ");
                 }
+                WriteLine();
+            }
+
+            // INT
+            int[] iarr = new int[] { 1,2,3 };
+            int[] iarr2 = new int[] { 4,5,6 };
+            GenericListBase<int> glbi = new(iarr);
+            GenericListBase<int> glbi2 = new(iarr2);
+
+            GenericListBase<GenericListBase<int>> glbglbi = new(glbi ^ glbi2);
+
+            foreach(var v in glbglbi) {
+                foreach(int i in v) {
+                    Write($"{i} ");
+                }
+                WriteLine();
             }
         }
 

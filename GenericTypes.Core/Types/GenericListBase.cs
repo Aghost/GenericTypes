@@ -221,10 +221,25 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
-        // CARTESIAN PRODUCT
-        //public static GenericList<GenericList<T>> operator *(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+        // CARTESIAN PRODUCT ???
+        public static GenericListBase<GenericListBase<T>> operator *(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+            GenericListBase<GenericListBase<T>> result = new();
 
-        // POWERSET
+            int count = lhs.Size + rhs.Size;
+
+            foreach(T lht in lhs) {
+                foreach(T rht in rhs) {
+                    GenericListBase<T> tmpresult = new();
+                    tmpresult.Add(rht);
+                    tmpresult.Add(lht);
+                    result.Add(tmpresult);
+                }
+            }
+
+            return result;
+        }
+
+        // POWERSET ???
         public static GenericListBase<GenericListBase<T>> operator ^(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             GenericListBase<GenericListBase<T>> result = new();
 
