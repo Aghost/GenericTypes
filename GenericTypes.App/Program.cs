@@ -8,9 +8,38 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
-            //TestListBase();
-            //TestListBase2();
+            TestListBase();
+            TestListBase2();
             TestListBase3();
+            SetTests();
+            PowerSetTests();
+        }
+
+        static void PowerSetTests() {
+            string[] strarr = new string[] { "one", "two", "three" };
+            string[] strarr2 = new string[] { "two", "three", "four" };
+            GenericListBase<string> glbs = new(strarr);
+            GenericListBase<string> glbs2 = new(strarr2);
+
+            GenericListBase<GenericListBase<string>> glbglb = new(glbs ^ glbs2);
+
+            foreach(var v in glbglb) {
+                foreach(string str in v) {
+                    WriteLine($"{str}");
+                }
+            }
+        }
+
+        static void SetTests() {
+            string[] strarr = new string[] { "one", "two", "three" };
+            string[] strarr2 = new string[] { "two", "three", "four" };
+
+            GenericListBase<string> glbs = new(strarr);
+            GenericListBase<string> glbs2 = new(strarr2);
+
+            foreach(var v in glbs - glbs2) {
+                WriteLine(v);
+            }
         }
 
         static void TestListBase3() {

@@ -44,7 +44,7 @@ namespace GenericTypes.Core.Types
         }
 
         public void Add(T[] elements) {
-            Resize(_Size + elements.Length); // check for offby1
+            Resize(_Size + elements.Length);
 
             foreach(T e in elements) {
                 _Data[_Size] = e;
@@ -120,8 +120,8 @@ namespace GenericTypes.Core.Types
         }
 
         public IEnumerator<T> GetEnumerator() {
-            foreach(T t in _Data) {
-                yield return t;
+            for (int i = 0; i < _Size; i++ ) {
+                yield return _Data[i];
             }
         }
 
@@ -150,6 +150,8 @@ namespace GenericTypes.Core.Types
 
         public static bool operator !=(GenericListBase<T> lhs, Object rhs) => !(lhs == rhs);
 
+        // UNION
+        // set of all objects
         public static GenericListBase<T> operator +(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             if (lhs.Size == 0) { return rhs; }
             if (rhs.Size == 0) { return lhs; }
@@ -160,6 +162,8 @@ namespace GenericTypes.Core.Types
             return newList;
         }
 
+        // COMPLEMENT / SET DIFFERENCE
+        // set of all objects that are not members of A
         public static GenericListBase<T> operator -(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             if (lhs.Size == 0) { return rhs; }
             if (rhs.Size == 0) { return lhs; }
@@ -177,8 +181,21 @@ namespace GenericTypes.Core.Types
             return newlist;
         }
 
+        // INTERSECTION
+        // the set of all objects that are members of both A and B
+        public static GenericListBase<T> operator /(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+            GenericListBase<T> newlist = new();
 
-        //public static GenericListBase<T> operator /(GenericList<T> lhs, GenericList<T> rhs) { }
+            foreach (T item in rhs) {
+                if (lhs.Contains(item)) {
+                    newlist.Add(item);
+                }
+            }
+
+            return newlist;
+        }
+
+        // LHS SUBSET OF RHS
         public static bool operator <(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             if (lhs.Size > rhs.Size)
                 return false;
@@ -191,6 +208,7 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
+        // LHS SUPERSET OF RHS
         public static bool operator >(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             if (rhs.Size > lhs.Size)
                 return false;
@@ -201,6 +219,32 @@ namespace GenericTypes.Core.Types
             }
 
             return true;
+        }
+
+        // CARTESIAN PRODUCT
+        //public static GenericList<GenericList<T>> operator *(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+
+        // POWERSET
+        public static GenericListBase<GenericListBase<T>> operator ^(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+            GenericListBase<GenericListBase<T>> result = new();
+
+            foreach(T lht in lhs) {
+                if (lhs.Size > 0) {
+                    GenericListBase<T> tmpresult = new();
+                    tmpresult.Add(lht);
+
+                    foreach(T rht in rhs) {
+                        if (!tmpresult.Contains(rht) && rht != null) {
+                            tmpresult.Add(rht);
+                        }
+                    }
+
+                    if (tmpresult.Size > 0)
+                        result.Add(tmpresult);
+                }
+            }
+
+            return result;
         }
     }
 }

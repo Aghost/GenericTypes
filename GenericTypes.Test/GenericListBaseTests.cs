@@ -77,13 +77,20 @@ namespace GenericTypes.Test
             GenericListBase<string> glbstr = new(strarr);
             GenericListBase<string> glbstr2 = new(strarr2);
 
+            /*
             GenericListBase<string> glbstr3a = glbstr2 - glbstr;
             string[] strarr3b = new string[] { "six", null, null, null };
             GenericListBase<string> glbstr3b = new(strarr3b);
             Assert.Equal(glbstr3a, glbstr3b);
+            */
+
+            GenericListBase<string> glbstr3a = glbstr2 - glbstr;
+            string[] strarr3b = new string[] { "six" };
+            GenericListBase<string> glbstr3b = new(strarr3b);
+            Assert.Equal(glbstr3a, glbstr3b);
 
             GenericListBase<string> glbstr4a = glbstr - glbstr2;
-            string[] strarr4b = new string[] { "three", null, null, null };
+            string[] strarr4b = new string[] { "three" };
             GenericListBase<string> glbstr4b = new(strarr4b);
             Assert.Equal(glbstr4a, glbstr4b);
         }
