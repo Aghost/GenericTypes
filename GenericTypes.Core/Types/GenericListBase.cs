@@ -17,6 +17,12 @@ namespace GenericTypes.Core.Types
 
         private bool IsEmpty { get => _Size == 0; }
 
+        public GenericListBase(T[] data) {
+            _Data = data;
+            _Capacity = data.Length;
+            _Size = data.Length;
+        }
+
         public GenericListBase(int initCapacity = 4) {
             _Capacity = initCapacity < 1 ? 0 : initCapacity;
             _Data = new T[initCapacity];
@@ -28,11 +34,6 @@ namespace GenericTypes.Core.Types
             _Size = rhs._Size;
         }
 
-        public GenericListBase(T[] data) {
-            _Data = data;
-            _Capacity = data.Length;
-            _Size = data.Length;
-        }
 
         public void Add(T element) {
             if (_Size == _Capacity) {
@@ -89,10 +90,12 @@ namespace GenericTypes.Core.Types
         public void Resize(int newSize) {
             T[] resized = new T[newSize];
 
-            for (int i = 0; i < newSize && i < _Size; i++) {
+            int i = 0;
+            for (; i < newSize && i < _Size; i++) {
                 resized[i] = _Data[i];
             }
 
+            _Size = i;
             _Data = resized;
             _Capacity = newSize;
         }
@@ -160,26 +163,26 @@ namespace GenericTypes.Core.Types
             if (lhs.Size == 0) { return rhs; }
             if (rhs.Size == 0) { return lhs; }
 
-            GenericListBase<T> newset = new();
+            GenericListBase<T> newlist = new();
 
-            bool hasItem = false;
+            //bool hasItem = false;
 
             // werkt bijna
             if (lhs.Size < rhs.Size) {
                 for (int i = 0; i < lhs.Size; i++) {
                     if (rhs.Contains(lhs.Data[i])) {
-                        newset.Add(lhs.Data[i]);
+                        newlist.Add(lhs.Data[i]);
                     }
                 }
             } else {
                 for (int i = 0; i < rhs.Size; i++) {
                     if (lhs.Contains(rhs.Data[i])) {
-                        newset.Add(rhs.Data[i]);
+                        newlist.Add(rhs.Data[i]);
                     }
                 }
             }
 
-            return newset;
+            return newlist;
         }
         //public static GenericListBase<T> operator /(GenericList<T> lhs, GenericList<T> rhs) { }
 

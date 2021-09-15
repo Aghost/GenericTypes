@@ -9,6 +9,19 @@ namespace GenericTypes.App
     {
         static void Main(string[] args) {
             TestListBase();
+            TestListBase2();
+        }
+
+        static void TestListBase2() {
+            string[] strarr = new string[] { "one", "two", "three", "four", "five" };
+            GenericListBase<string> glbs = new(strarr);
+
+            WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
+
+            if (glbs.Contains("five", out int position)) { WriteLine($"five @ {position}"); }
+            if (!glbs.Contains("six")) { WriteLine($"glbs does not contain six"); }
+
+            WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
         }
 
         static void TestListBase() {
