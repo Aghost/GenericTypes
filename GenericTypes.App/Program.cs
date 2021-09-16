@@ -9,14 +9,65 @@ namespace GenericTypes.App
     {
         static void Main(string[] args) {
             /*
-            */
             TestListBase();
             TestListBase2();
             TestListBase3();
             SetTests();
-            PowerSetTests();
-            CarthesianSetTests();
             LinkedListTests();
+            CarthesianSetTests();
+            AggregateSetTests();
+            */
+            PowerSetTests();
+            /*
+            */
+        }
+
+        static void PowerSetTests() {
+            string[] strarr = new string[] { "a", "b", "c" };
+            GenericListBase<string> glbs = new(strarr);
+
+
+            GenericListBase<GenericListBase<string>> glglbs = glbs.PowerSet();
+            foreach(var v in glglbs) {
+                foreach (var vv in v) {
+                    Write($"{vv}");
+                }
+            }
+        }
+
+        static void AggregateSetTests() {
+            // STR
+            string[] strarr = new string[] { "a", "b", "c" };
+            string[] strarr2 = new string[] { "1", "2", "3" };
+
+            GenericListBase<string> glbs = new(strarr);
+            GenericListBase<string> glbs2 = new(strarr2);
+
+            GenericListBase<GenericListBase<string>> glbglb = new(glbs ^ glbs2);
+
+            foreach(var v in glbglb) {
+                foreach(string str in v) {
+                    Write($"{str} ");
+                }
+                WriteLine();
+            }
+
+            // INT
+            /*
+            int[] iarr = new int[] { 1,2,3 };
+            int[] iarr2 = new int[] { 4,5,6 };
+            GenericListBase<int> glbi = new(iarr);
+            GenericListBase<int> glbi2 = new(iarr2);
+
+            GenericListBase<GenericListBase<int>> glbglbi = new(glbi ^ glbi2);
+
+            foreach(var v in glbglbi) {
+                foreach(int i in v) {
+                    Write($"{i} ");
+                }
+                WriteLine();
+            }
+            */
         }
 
         static void LinkedListTests() {
@@ -33,8 +84,8 @@ namespace GenericTypes.App
 
         static void CarthesianSetTests() {
             // STR
-            string[] strarr = new string[] { "one", "two", "three" };
-            string[] strarr2 = new string[] { "two", "three", "four" };
+            string[] strarr = new string[] { "1", "2", "3" };
+            string[] strarr2 = new string[] { "a", "b", "c" };
             GenericListBase<string> glbs = new(strarr);
             GenericListBase<string> glbs2 = new(strarr2);
 
@@ -77,38 +128,6 @@ namespace GenericTypes.App
             foreach(var v in glbglbi) {
                 foreach(int i in v) {
                     Write($"\t{i} ");
-                }
-                WriteLine();
-            }
-        }
-
-        static void PowerSetTests() {
-            // STR
-            string[] strarr = new string[] { "one", "two", "three" };
-            string[] strarr2 = new string[] { "two", "three", "four" };
-            GenericListBase<string> glbs = new(strarr);
-            GenericListBase<string> glbs2 = new(strarr2);
-
-            GenericListBase<GenericListBase<string>> glbglb = new(glbs ^ glbs2);
-
-            foreach(var v in glbglb) {
-                foreach(string str in v) {
-                    Write($"{str} ");
-                }
-                WriteLine();
-            }
-
-            // INT
-            int[] iarr = new int[] { 1,2,3 };
-            int[] iarr2 = new int[] { 4,5,6 };
-            GenericListBase<int> glbi = new(iarr);
-            GenericListBase<int> glbi2 = new(iarr2);
-
-            GenericListBase<GenericListBase<int>> glbglbi = new(glbi ^ glbi2);
-
-            foreach(var v in glbglbi) {
-                foreach(int i in v) {
-                    Write($"{i} ");
                 }
                 WriteLine();
             }

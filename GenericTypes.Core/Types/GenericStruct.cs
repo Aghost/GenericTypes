@@ -11,9 +11,9 @@ namespace GenericTypes.Core.Types
         private int _Capacity;
         private int _Size = 0;
 
-        public T[] Data { get => _Data; }
+        public T[] Data     { get => _Data; }
         public int Capacity { get => _Capacity; }
-        public int Size { get => _Size; }
+        public int Size     { get => _Size; }
 
         public GenericStruct(T[] data) {
             _Data = data;
@@ -213,7 +213,7 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
-        // CARTESIAN PRODUCT ???
+        // CARTESIAN PRODUCT
         public static GenericStruct<GenericStruct<T>> operator *(GenericStruct<T> lhs, GenericStruct<T> rhs) {
             GenericStruct<GenericStruct<T>> result = new();
 
@@ -229,7 +229,27 @@ namespace GenericTypes.Core.Types
             return result;
         }
 
-        // POWERSET ???
+
+        // POWERSET
+        public GenericStruct<GenericStruct<T>> PowerSet() {
+            GenericStruct<GenericStruct<T>> result = new();
+
+            for (int i = 0; i < (1 << _Size); i++) {
+                GenericStruct<T> sublist = new();
+
+                for (int j = 0; j < _Size; j++) {
+                    if ((i & (1 << j)) != 0) {
+                        sublist.Add(_Data[j]);
+                    }
+                }
+
+                result.Add(sublist);
+            }
+
+            return result;
+        }
+
+        // ZIP ???
         public static GenericStruct<GenericStruct<T>> operator ^(GenericStruct<T> lhs, GenericStruct<T> rhs) {
             GenericStruct<GenericStruct<T>> result = new();
 
@@ -250,5 +270,7 @@ namespace GenericTypes.Core.Types
 
             return result;
         }
+
+
     }
 }

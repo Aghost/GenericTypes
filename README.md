@@ -2,7 +2,9 @@
 
 ## Generic List
 - properties
-Data, Capacity, Size, IsEmpty
+`Data`
+`Capacity`
+`Size`
 
 - Constructors
 `GenericListBase(int initCapacity = 4);`

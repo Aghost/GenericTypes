@@ -116,7 +116,43 @@ namespace GenericTypes.Test
             bool isSuperset3 = glbi3 > glbi2;
             Assert.Equal(expected, isSuperset3);
         }
-        /*
-        */
+
+        [Fact]
+        public void GenericListBaseCarthesianProductTest() {
+            string[] strarr = new string[] { "1", "2", "3" };
+            string[] strarr2 = new string[] { "x", "y", "z" };
+            GenericListBase<string> glbstr = new(strarr); 
+            GenericListBase<string> glbstr2 = new(strarr2);
+            GenericListBase<GenericListBase<string>> glbstr3 = new(glbstr * glbstr2);
+
+            string actual = "";
+            foreach (var v in glbstr3) {
+                foreach (var vv in v) {
+                    actual += vv;
+                }
+            }
+            string expected = "x1y1z1x2y2z2x3y3z3";
+
+            Assert.Equal(expected, actual);
+
+        }
+
+        [Fact]
+        public void GenericListBasePowerSet() {
+            string[] strarr = new string[] { "a", "b", "c" };
+            GenericListBase<string> glbstr = new(strarr);
+
+            GenericListBase<GenericListBase<string>> powerset = glbstr.PowerSet();
+            string actual = "";
+            foreach(var v in powerset) {
+                foreach(var vv in v) {
+                    actual += vv;
+                }
+            }
+
+            string expected = "ababcacbcabc";
+
+            Assert.Equal(actual, expected);
+        }
     }
 }
