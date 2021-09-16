@@ -8,7 +8,6 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
-            /*
             TestListBase();
             TestListBase2();
             TestListBase3();
@@ -16,7 +15,6 @@ namespace GenericTypes.App
             LinkedListTests();
             CarthesianSetTests();
             AggregateSetTests();
-            */
             PowerSetTests();
             /*
             */

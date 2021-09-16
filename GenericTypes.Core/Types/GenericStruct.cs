@@ -254,18 +254,16 @@ namespace GenericTypes.Core.Types
             GenericStruct<GenericStruct<T>> result = new();
 
             foreach(T lht in lhs) {
-                if (lhs.Size > 0) {
-                    GenericStruct<T> tmpresult = new();
-                    tmpresult.Add(lht);
+                GenericStruct<T> tmpresult = new();
+                tmpresult.Add(lht);
 
-                    foreach(T rht in rhs) {
-                        if (!tmpresult.Contains(rht))
-                            tmpresult.Add(rht);
-                    }
-
-                    if (tmpresult.Size > 0)
-                        result.Add(tmpresult);
+                foreach(T rht in rhs) {
+                    if (!tmpresult.Contains(rht))
+                        tmpresult.Add(rht);
                 }
+
+                if (tmpresult.Size > 0)
+                    result.Add(tmpresult);
             }
 
             return result;

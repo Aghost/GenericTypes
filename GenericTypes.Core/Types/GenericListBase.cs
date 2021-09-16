@@ -62,7 +62,7 @@ namespace GenericTypes.Core.Types
         public bool Contains(T element, out int position) {
             position = 0;
 
-            for(int i = 0; i < _Size; i++) {
+            for (int i = 0; i < _Size; i++) {
                 if (Data[i].Equals(element)) {
                     position = i;
                     return true;
@@ -254,18 +254,16 @@ namespace GenericTypes.Core.Types
             GenericListBase<GenericListBase<T>> result = new();
 
             foreach(T lht in lhs) {
-                if (lhs.Size > 0) {
-                    GenericListBase<T> tmpresult = new();
-                    tmpresult.Add(lht);
+                GenericListBase<T> tmpresult = new();
+                tmpresult.Add(lht);
 
-                    foreach(T rht in rhs) {
-                        if (!tmpresult.Contains(rht))
-                            tmpresult.Add(rht);
-                    }
-
-                    if (tmpresult.Size > 0)
-                        result.Add(tmpresult);
+                foreach(T rht in rhs) {
+                    if (!tmpresult.Contains(rht))
+                        tmpresult.Add(rht);
                 }
+
+                if (tmpresult.Size > 0)
+                    result.Add(tmpresult);
             }
 
             return result;
