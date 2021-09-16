@@ -9,13 +9,13 @@ namespace GenericTypes.App
     {
         static void Main(string[] args) {
             /*
+            */
             TestListBase();
             TestListBase2();
             TestListBase3();
             SetTests();
             PowerSetTests();
             CarthesianSetTests();
-            */
             LinkedListTests();
         }
 

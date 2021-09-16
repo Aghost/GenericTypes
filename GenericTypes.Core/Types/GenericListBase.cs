@@ -219,8 +219,6 @@ namespace GenericTypes.Core.Types
         public static GenericListBase<GenericListBase<T>> operator *(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             GenericListBase<GenericListBase<T>> result = new();
 
-            int count = lhs.Size + rhs.Size;
-
             foreach(T lht in lhs) {
                 foreach(T rht in rhs) {
                     GenericListBase<T> tmpresult = new();

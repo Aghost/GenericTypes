@@ -219,8 +219,6 @@ namespace GenericTypes.Core.Types
         public static GenericStructBase<GenericStructBase<T>> operator *(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
             GenericStructBase<GenericStructBase<T>> result = new();
 
-            int count = lhs.Size + rhs.Size;
-
             foreach(T lht in lhs) {
                 foreach(T rht in rhs) {
                     GenericStructBase<T> tmpresult = new();
