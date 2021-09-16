@@ -6,7 +6,7 @@ using static System.Console;
 
 namespace GenericTypes.Core.Types
 {
-    public class GenericStructBase<T> : IEnumerable<T> {
+    public class GenericStruct<T> : IEnumerable<T> {
         private T[] _Data;
         private int _Capacity;
         private int _Size = 0;
@@ -17,18 +17,18 @@ namespace GenericTypes.Core.Types
 
         private bool IsEmpty { get => _Size == 0; }
 
-        public GenericStructBase(T[] data) {
+        public GenericStruct(T[] data) {
             _Data = data;
             _Capacity = data.Length;
             _Size = data.Length;
         }
 
-        public GenericStructBase(int initCapacity = 4) {
+        public GenericStruct(int initCapacity = 4) {
             _Capacity = initCapacity < 1 ? 0 : initCapacity;
             _Data = new T[initCapacity];
         }
 
-        public GenericStructBase(GenericStructBase<T> rhs) {
+        public GenericStruct(GenericStruct<T> rhs) {
             _Data = rhs.ToArray();
             _Capacity = rhs._Capacity;
             _Size = rhs._Size;
@@ -52,7 +52,7 @@ namespace GenericTypes.Core.Types
         }
 
         public bool Contains(T element) {
-            for (int i = 0; i < Size; i++) {
+            for (int i = 0; i < _Size; i++) {
                 if (_Data[i].Equals(element)) {
                     return true;
                 }
@@ -127,10 +127,10 @@ namespace GenericTypes.Core.Types
             if (this.GetType() != obj.GetType())
                 return false;
 
-            return ValueEquals((GenericStructBase<T>)obj);
+            return ValueEquals((GenericStruct<T>)obj);
         }
 
-        public bool ValueEquals(GenericStructBase<T> rhs) {
+        public bool ValueEquals(GenericStruct<T> rhs) {
             if (this._Size != rhs.Size)
                 return false;
 
@@ -142,17 +142,17 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
-        public static bool operator ==(GenericStructBase<T> lhs, Object rhs) => lhs.Equals(rhs);
+        public static bool operator ==(GenericStruct<T> lhs, Object rhs) => lhs.Equals(rhs);
 
-        public static bool operator !=(GenericStructBase<T> lhs, Object rhs) => !(lhs == rhs);
+        public static bool operator !=(GenericStruct<T> lhs, Object rhs) => !(lhs == rhs);
 
         // UNION
-        // set of all objects
-        public static GenericStructBase<T> operator +(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
+        // set of all objects in A and B
+        public static GenericStruct<T> operator +(GenericStruct<T> lhs, GenericStruct<T> rhs) {
             if (lhs.Size == 0) { return rhs; }
             if (rhs.Size == 0) { return lhs; }
 
-            GenericStructBase<T> newList = new(lhs.ToArray());
+            GenericStruct<T> newList = new(lhs.ToArray());
             newList.Add(rhs.ToArray());
 
             return newList;
@@ -160,11 +160,11 @@ namespace GenericTypes.Core.Types
 
         // COMPLEMENT / SET DIFFERENCE
         // set of all objects that are not members of A
-        public static GenericStructBase<T> operator -(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
+        public static GenericStruct<T> operator -(GenericStruct<T> lhs, GenericStruct<T> rhs) {
             if (lhs.Size == 0) { return rhs; }
             if (rhs.Size == 0) { return lhs; }
 
-            GenericStructBase<T> newlist = new();
+            GenericStruct<T> newlist = new();
 
             foreach (T item in lhs) {
                 // uncomment to only add unique items!
@@ -178,8 +178,8 @@ namespace GenericTypes.Core.Types
 
         // INTERSECTION
         // the set of all objects that are members of both A and B
-        public static GenericStructBase<T> operator /(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
-            GenericStructBase<T> newlist = new();
+        public static GenericStruct<T> operator /(GenericStruct<T> lhs, GenericStruct<T> rhs) {
+            GenericStruct<T> newlist = new();
 
             foreach (T item in rhs) {
                 if (lhs.Contains(item))
@@ -189,8 +189,8 @@ namespace GenericTypes.Core.Types
             return newlist;
         }
 
-        // LHS SUBSET OF RHS
-        public static bool operator <(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
+        // IS LHS SUBSET OF RHS
+        public static bool operator <(GenericStruct<T> lhs, GenericStruct<T> rhs) {
             if (lhs.Size > rhs.Size)
                 return false;
 
@@ -202,8 +202,8 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
-        // LHS SUPERSET OF RHS
-        public static bool operator >(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
+        // IS LHS SUPERSET OF RHS
+        public static bool operator >(GenericStruct<T> lhs, GenericStruct<T> rhs) {
             if (rhs.Size > lhs.Size)
                 return false;
 
@@ -216,12 +216,12 @@ namespace GenericTypes.Core.Types
         }
 
         // CARTESIAN PRODUCT ???
-        public static GenericStructBase<GenericStructBase<T>> operator *(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
-            GenericStructBase<GenericStructBase<T>> result = new();
+        public static GenericStruct<GenericStruct<T>> operator *(GenericStruct<T> lhs, GenericStruct<T> rhs) {
+            GenericStruct<GenericStruct<T>> result = new();
 
             foreach(T lht in lhs) {
                 foreach(T rht in rhs) {
-                    GenericStructBase<T> tmpresult = new();
+                    GenericStruct<T> tmpresult = new();
                     tmpresult.Add(rht);
                     tmpresult.Add(lht);
                     result.Add(tmpresult);
@@ -232,12 +232,12 @@ namespace GenericTypes.Core.Types
         }
 
         // POWERSET ???
-        public static GenericStructBase<GenericStructBase<T>> operator ^(GenericStructBase<T> lhs, GenericStructBase<T> rhs) {
-            GenericStructBase<GenericStructBase<T>> result = new();
+        public static GenericStruct<GenericStruct<T>> operator ^(GenericStruct<T> lhs, GenericStruct<T> rhs) {
+            GenericStruct<GenericStruct<T>> result = new();
 
             foreach(T lht in lhs) {
                 if (lhs.Size > 0) {
-                    GenericStructBase<T> tmpresult = new();
+                    GenericStruct<T> tmpresult = new();
                     tmpresult.Add(lht);
 
                     foreach(T rht in rhs) {

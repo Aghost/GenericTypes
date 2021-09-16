@@ -52,7 +52,7 @@ namespace GenericTypes.Core.Types
         }
 
         public bool Contains(T element) {
-            for (int i = 0; i < Size; i++) {
+            for (int i = 0; i < _Size; i++) {
                 if (_Data[i].Equals(element)) {
                     return true;
                 }
@@ -147,7 +147,7 @@ namespace GenericTypes.Core.Types
         public static bool operator !=(GenericListBase<T> lhs, Object rhs) => !(lhs == rhs);
 
         // UNION
-        // set of all objects
+        // set of all objects in A and B
         public static GenericListBase<T> operator +(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             if (lhs.Size == 0) { return rhs; }
             if (rhs.Size == 0) { return lhs; }
@@ -189,7 +189,7 @@ namespace GenericTypes.Core.Types
             return newlist;
         }
 
-        // LHS SUBSET OF RHS
+        // IS LHS SUBSET OF RHS
         public static bool operator <(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             if (lhs.Size > rhs.Size)
                 return false;
@@ -202,7 +202,7 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
-        // LHS SUPERSET OF RHS
+        // IS LHS SUPERSET OF RHS
         public static bool operator >(GenericListBase<T> lhs, GenericListBase<T> rhs) {
             if (rhs.Size > lhs.Size)
                 return false;

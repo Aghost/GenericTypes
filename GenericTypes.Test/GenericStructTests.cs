@@ -4,16 +4,16 @@ using GenericTypes.Core.Types;
 
 namespace GenericTypes.Test
 {
-    public class GenericStructBaseTests
+    public class GenericStructTests
     {
         [Fact]
         public void GenericStructConstructors() {
             // Assign
-            GenericStructBase<int> glb = new();
-            GenericStructBase<string> glb8 = new(8);
+            GenericStruct<int> glb = new();
+            GenericStruct<string> glb8 = new(8);
 
             string[] strarr = new string[] { "aap", "mies" };
-            GenericStructBase<string> glbstr = new(strarr);
+            GenericStruct<string> glbstr = new(strarr);
 
             int actual;
 
@@ -33,7 +33,7 @@ namespace GenericTypes.Test
             // Assign
             int actual = -1;
             string[] strarr = new string[] { "one", "two", "three", "four", "five" };
-            GenericStructBase<string> glbstr = new(strarr);
+            GenericStruct<string> glbstr = new(strarr);
             glbstr.Add("six");
             glbstr.Add(new string[] { "seven", "eight" });
             // Act
@@ -50,7 +50,7 @@ namespace GenericTypes.Test
         public void GenericStructResize() {
             // Assign
             string[] strarr = new string[] { "one", "two", "three", "four", "five" };
-            GenericStructBase<string> glbstr = new(strarr);
+            GenericStruct<string> glbstr = new(strarr);
 
             glbstr.Resize(4);
 
@@ -74,25 +74,25 @@ namespace GenericTypes.Test
             string[] strarr = new string[] { "one", "two", "three" };
             string[] strarr2 = new string[] { "one", "two", "six" };
 
-            GenericStructBase<string> glbstr = new(strarr);
-            GenericStructBase<string> glbstr2 = new(strarr2);
+            GenericStruct<string> glbstr = new(strarr);
+            GenericStruct<string> glbstr2 = new(strarr2);
 
-            GenericStructBase<string> glbstr3a = glbstr2 - glbstr;
+            GenericStruct<string> glbstr3a = glbstr2 - glbstr;
             string[] strarr3b = new string[] { "six" };
-            GenericStructBase<string> glbstr3b = new(strarr3b);
+            GenericStruct<string> glbstr3b = new(strarr3b);
             Assert.Equal(glbstr3a, glbstr3b);
 
-            GenericStructBase<string> glbstr4a = glbstr - glbstr2;
+            GenericStruct<string> glbstr4a = glbstr - glbstr2;
             string[] strarr4b = new string[] { "three" };
-            GenericStructBase<string> glbstr4b = new(strarr4b);
+            GenericStruct<string> glbstr4b = new(strarr4b);
             Assert.Equal(glbstr4a, glbstr4b);
         }
 
         [Fact]
         public void GenericStructComparatorMethodsTests() {
             int[] iarr = new int[] { 1, 2, 3 };
-            GenericStructBase<int> glbi = new(iarr);
-            GenericStructBase<int> glbi2 = new(glbi);
+            GenericStruct<int> glbi = new(iarr);
+            GenericStruct<int> glbi2 = new(glbi);
 
             Assert.Equal(glbi, glbi2);
 
@@ -111,7 +111,7 @@ namespace GenericTypes.Test
 
             expected = false;
             
-            GenericStructBase<int> glbi3 = new();
+            GenericStruct<int> glbi3 = new();
 
             bool isSuperset3 = glbi3 > glbi2;
             Assert.Equal(expected, isSuperset3);
