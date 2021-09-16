@@ -15,8 +15,6 @@ namespace GenericTypes.Core.Types
         public int Capacity { get => _Capacity; }
         public int Size { get => _Size; }
 
-        private bool IsEmpty { get => _Size == 0; }
-
         public GenericStruct(T[] data) {
             _Data = data;
             _Capacity = data.Length;
