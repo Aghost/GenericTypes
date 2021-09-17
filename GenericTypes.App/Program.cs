@@ -24,12 +24,12 @@ namespace GenericTypes.App
             string[] strarr = new string[] { "a", "b", "c" };
             GenericListBase<string> glbs = new(strarr);
 
-
             GenericListBase<GenericListBase<string>> glglbs = glbs.PowerSet();
             foreach(var v in glglbs) {
                 foreach (var vv in v) {
                     Write($"{vv}");
                 }
+                WriteLine();
             }
         }
 
@@ -163,22 +163,22 @@ namespace GenericTypes.App
             string[] strarr = new string[] { "one", "two", "three", "four", "five" };
             GenericListBase<string> glbs = new(strarr);
 
-            WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
+            WriteLine($"cap: {glbs.Data.Length} size: {glbs.Size}");
             if (glbs.Contains("five", out int position)) { WriteLine($"five @ {position}"); }
             if (!glbs.Contains("six")) { WriteLine($"glbs does not contain six"); }
-            WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
+            WriteLine($"cap: {glbs.Data.Length} size: {glbs.Size}");
         }
 
         static void TestListBase() {
             // INTS
             GenericListBase<int> glbi = new();
-            WriteLine($"cap: {glbi.Capacity} size: {glbi.Size}");
+            WriteLine($"cap: {glbi.Data.Length} size: {glbi.Size}");
             glbi.Add(1);
             glbi.Add(2);
             glbi.Add(3);
             glbi.Add(4);
             glbi.Add(5);
-            WriteLine($"cap: {glbi.Capacity} size: {glbi.Size}");
+            WriteLine($"cap: {glbi.Data.Length} size: {glbi.Size}");
             foreach(int i in glbi) { WriteLine($"{i}"); }
             glbi.Resize(2);
             WriteLine("------");
@@ -186,13 +186,13 @@ namespace GenericTypes.App
 
             // STRINGS
             GenericListBase<string> glbs = new();
-            WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
+            WriteLine($"cap: {glbs.Data.Length} size: {glbs.Size}");
             glbs.Add("one");
             glbs.Add("two");
             glbs.Add("three");
             glbs.Add("four");
             glbs.Add("five");
-            WriteLine($"cap: {glbs.Capacity} size: {glbs.Size}");
+            WriteLine($"cap: {glbs.Data.Length} size: {glbs.Size}");
             foreach(string s in glbs) { WriteLine($"{s}"); }
             glbs.Resize(2);
             WriteLine("------");

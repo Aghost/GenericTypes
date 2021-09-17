@@ -7,51 +7,43 @@ using static System.Console;
 namespace GenericTypes.Core.Types
 {
     public class GenericListBase<T> : IEnumerable<T> {
-        private T[] _Data;
-        private int _Capacity;
-        private int _Size = 0;
-
-        public T[] Data     { get => _Data; }
-        public int Capacity { get => _Capacity; }
-        public int Size     { get => _Size; }
+        public T[] Data     { get; private set;}
+        public int Size     { get; private set;}
 
         public GenericListBase(T[] data) {
-            _Data = data;
-            _Capacity = data.Length;
-            _Size = data.Length;
+            Data = data;
+            Size = data.Length;
         }
 
         public GenericListBase(int initCapacity = 4) {
-            _Capacity = initCapacity < 1 ? 0 : initCapacity;
-            _Data = new T[initCapacity];
+            Data = new T[initCapacity];
         }
 
-        public GenericListBase(GenericListBase<T> rhs) {
-            _Data = rhs.ToArray();
-            _Capacity = rhs._Capacity;
-            _Size = rhs._Size;
+        public GenericListBase(GenericListBase<T> set) {
+            Data = set.ToArray();
+            Size = set.Size;
         }
 
         public void Add(T element) {
-            if (_Size == _Capacity)
+            if (Size == Data.Length)
                 Resize();
 
-            _Data[_Size] = element;
-            _Size++;
+            Data[Size] = element;
+            Size++;
         }
 
         public void Add(T[] elements) {
-            Resize(_Size + elements.Length);
+            Resize(Size + elements.Length);
 
             foreach(T e in elements) {
-                _Data[_Size] = e;
-                _Size++;
+                Data[Size] = e;
+                Size++;
             }
         }
 
         public bool Contains(T element) {
-            for (int i = 0; i < _Size; i++) {
-                if (_Data[i].Equals(element)) {
+            for (int i = 0; i < Size; i++) {
+                if (Data[i].Equals(element)) {
                     return true;
                 }
             }
@@ -62,7 +54,7 @@ namespace GenericTypes.Core.Types
         public bool Contains(T element, out int position) {
             position = 0;
 
-            for (int i = 0; i < _Size; i++) {
+            for (int i = 0; i < Size; i++) {
                 if (Data[i].Equals(element)) {
                     position = i;
                     return true;
@@ -73,40 +65,37 @@ namespace GenericTypes.Core.Types
         }
 
         private void Resize() {
-            T[] resized = new T[_Capacity * 2];
+            T[] resized = new T[Data.Length * 2];
 
-            for (int i = 0; i < _Size; i++) {
-                resized[i] = _Data[i];
+            for (int i = 0; i < Data.Length; i++) {
+                resized[i] = Data[i];
             }
 
-            _Data = resized;
-            _Capacity *= 2;
+            Data = resized;
         }
 
         public void Resize(int newSize) {
             T[] resized = new T[newSize];
 
             int i = 0;
-            for (; i < newSize && i < _Size; i++) {
-                resized[i] = _Data[i];
+            for (; i < newSize && i < Size; i++) {
+                resized[i] = Data[i];
             }
 
-            _Size = i;
-            _Data = resized;
-            _Capacity = newSize;
+            Size = i;
+            Data = resized;
         }
 
         public T[] ToArray() {
-            T[] tmp = new T[_Capacity];
-            Array.Copy(_Data, tmp, _Capacity);
+            T[] tmp = new T[Data.Length];
+            Array.Copy(Data, tmp, Data.Length);
 
             return tmp;
         }
 
         public void Clear() {
-            _Capacity = 4;
-            _Data = new T[Capacity];
-            _Size = 0;
+            Data = new T[Data.Length];
+            Size = 0;
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
@@ -114,12 +103,12 @@ namespace GenericTypes.Core.Types
         }
 
         public IEnumerator<T> GetEnumerator() {
-            for (int i = 0; i < _Size; i++ ) {
-                yield return _Data[i];
+            for (int i = 0; i < Size; i++ ) {
+                yield return Data[i];
             }
         }
 
-        public override int GetHashCode() => (_Data).GetHashCode(); //HashCode.Combine(_Data);
+        public override int GetHashCode() => (Data).GetHashCode(); //HashCode.Combine(Data);
 
         public override bool Equals(Object obj) {
             if (this.GetType() != obj.GetType())
@@ -128,59 +117,58 @@ namespace GenericTypes.Core.Types
             return ValueEquals((GenericListBase<T>)obj);
         }
 
-        public bool ValueEquals(GenericListBase<T> rhs) {
-            if (this._Size != rhs.Size)
+        public bool ValueEquals(GenericListBase<T> set) {
+            if (this.Size != set.Size)
                 return false;
 
-            for (int i = 0; i < _Size; i++) {
-                if (this._Data[i].GetHashCode() != rhs.Data[i].GetHashCode())
+            for (int i = 0; i < Size; i++) {
+                if (this.Data[i].GetHashCode() != set.Data[i].GetHashCode())
                     return false;
             }
 
             return true;
         }
 
-        public static bool operator ==(GenericListBase<T> lhs, Object rhs) => lhs.Equals(rhs);
+        public static bool operator ==(GenericListBase<T> setA, Object setB) => setA.Equals(setB);
+        public static bool operator !=(GenericListBase<T> setA, Object setB) => !(setA == setB);
 
-        public static bool operator !=(GenericListBase<T> lhs, Object rhs) => !(lhs == rhs);
+        // UNION: set of all objects in A and B
+        public static GenericListBase<T> operator +(GenericListBase<T> setA, GenericListBase<T> setB) {
+            if (setA.Size == 0) { return setB; }
+            if (setB.Size == 0) { return setA; }
 
-        // UNION
-        // set of all objects in A and B
-        public static GenericListBase<T> operator +(GenericListBase<T> lhs, GenericListBase<T> rhs) {
-            if (lhs.Size == 0) { return rhs; }
-            if (rhs.Size == 0) { return lhs; }
-
-            GenericListBase<T> newList = new(lhs.ToArray());
-            newList.Add(rhs.ToArray());
+            GenericListBase<T> newList = new(setA.ToArray());
+            newList.Add(setB.ToArray());
 
             return newList;
         }
 
-        // COMPLEMENT / SET DIFFERENCE
-        // set of all objects that are not members of A
-        public static GenericListBase<T> operator -(GenericListBase<T> lhs, GenericListBase<T> rhs) {
-            if (lhs.Size == 0) { return rhs; }
-            if (rhs.Size == 0) { return lhs; }
+        // COMPLEMENT / SET DIFFERENCE: set of all objects that are not members of A
+        public static GenericListBase<T> operator -(GenericListBase<T> setA, GenericListBase<T> setB) {
+            if (setA.Size == 0) { return setB; }
+            if (setB.Size == 0) { return setA; }
 
             GenericListBase<T> newlist = new();
 
-            foreach (T item in lhs) {
+            foreach (T item in setA) {
                 // uncomment to only add unique items!
-                //if (!newlist.Contains(item) && !rhs.Contains(item)) {
-                if (!rhs.Contains(item))
+                //if (!newlist.Contains(item) && !setB.Contains(item)) {
+                if (!setB.Contains(item))
                     newlist.Add(item);
             }
 
             return newlist;
         }
 
-        // INTERSECTION
-        // the set of all objects that are members of both A and B
-        public static GenericListBase<T> operator /(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+        // INTERSECTION: the set of all objects that are members of both A and B
+        public static GenericListBase<T> operator /(GenericListBase<T> setA, GenericListBase<T> setB) {
             GenericListBase<T> newlist = new();
 
-            foreach (T item in rhs) {
-                if (lhs.Contains(item))
+            if (setB.Size == 0) 
+                return newlist;
+
+            foreach (T item in setB) {
+                if (setA.Contains(item))
                     newlist.Add(item);
             }
 
@@ -188,12 +176,12 @@ namespace GenericTypes.Core.Types
         }
 
         // IS LHS SUBSET OF RHS
-        public static bool operator <(GenericListBase<T> lhs, GenericListBase<T> rhs) {
-            if (lhs.Size > rhs.Size)
+        public static bool operator <(GenericListBase<T> setA, GenericListBase<T> setB) {
+            if (setA.Size > setB.Size)
                 return false;
 
-            foreach (T item in lhs) {
-                if (!rhs.Contains(item))
+            foreach (T item in setA) {
+                if (!setB.Contains(item))
                     return false;
             }
 
@@ -201,12 +189,12 @@ namespace GenericTypes.Core.Types
         }
 
         // IS LHS SUPERSET OF RHS
-        public static bool operator >(GenericListBase<T> lhs, GenericListBase<T> rhs) {
-            if (rhs.Size > lhs.Size)
+        public static bool operator >(GenericListBase<T> setA, GenericListBase<T> setB) {
+            if (setB.Size > setA.Size)
                 return false;
 
-            foreach (T item in rhs) {
-                if (!lhs.Contains(item))
+            foreach (T item in setB) {
+                if (!setA.Contains(item))
                     return false;
             }
 
@@ -214,11 +202,11 @@ namespace GenericTypes.Core.Types
         }
 
         // CARTESIAN PRODUCT
-        public static GenericListBase<GenericListBase<T>> operator *(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+        public static GenericListBase<GenericListBase<T>> operator *(GenericListBase<T> setA, GenericListBase<T> setB) {
             GenericListBase<GenericListBase<T>> result = new();
 
-            foreach(T lht in lhs) {
-                foreach(T rht in rhs) {
+            foreach(T lht in setA) {
+                foreach(T rht in setB) {
                     GenericListBase<T> tmpresult = new();
                     tmpresult.Add(rht);
                     tmpresult.Add(lht);
@@ -229,17 +217,16 @@ namespace GenericTypes.Core.Types
             return result;
         }
 
-
         // POWERSET
         public GenericListBase<GenericListBase<T>> PowerSet() {
             GenericListBase<GenericListBase<T>> result = new();
 
-            for (int i = 0; i < (1 << _Size); i++) {
+            for (int i = 0; i < (1 << Size); i++) {
                 GenericListBase<T> sublist = new();
 
-                for (int j = 0; j < _Size; j++) {
+                for (int j = 0; j < Size; j++) {
                     if ((i & (1 << j)) != 0) {
-                        sublist.Add(_Data[j]);
+                        sublist.Add(Data[j]);
                     }
                 }
 
@@ -250,14 +237,14 @@ namespace GenericTypes.Core.Types
         }
 
         // ZIP ???
-        public static GenericListBase<GenericListBase<T>> operator ^(GenericListBase<T> lhs, GenericListBase<T> rhs) {
+        public static GenericListBase<GenericListBase<T>> operator ^(GenericListBase<T> setA, GenericListBase<T> setB) {
             GenericListBase<GenericListBase<T>> result = new();
 
-            foreach(T lht in lhs) {
+            foreach(T lht in setA) {
                 GenericListBase<T> tmpresult = new();
                 tmpresult.Add(lht);
 
-                foreach(T rht in rhs) {
+                foreach(T rht in setB) {
                     if (!tmpresult.Contains(rht))
                         tmpresult.Add(rht);
                 }
@@ -268,7 +255,6 @@ namespace GenericTypes.Core.Types
 
             return result;
         }
-
 
     }
 }

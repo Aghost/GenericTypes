@@ -15,16 +15,15 @@ namespace GenericTypes.Test
             string[] strarr = new string[] { "aap", "mies" };
             GenericListBase<string> glbstr = new(strarr);
 
-            int actual;
 
             // Act and Assert
-            actual = glb.Capacity;
+            int actual = glb.Data.Length;
             Assert.Equal(4, actual);
 
-            actual = glb8.Capacity;
+            actual = glb8.Data.Length;
             Assert.Equal(8, actual);
 
-            actual = glbstr.Capacity;
+            actual = glbstr.Data.Length;
             Assert.Equal(2, actual);
         }
 
@@ -43,7 +42,6 @@ namespace GenericTypes.Test
 
             // Assert
             Assert.Equal(5, actual);
-            Assert.Equal(8, glbstr.Capacity);
         }
         
         [Fact]
@@ -55,18 +53,15 @@ namespace GenericTypes.Test
             glbstr.Resize(4);
 
             // Act and Assert
-            Assert.Equal(4, glbstr.Capacity);
-            Assert.Equal(4, glbstr.Size);
+            Assert.Equal(4, glbstr.Data.Length);
 
             glbstr.Resize(6);
 
-            Assert.Equal(6, glbstr.Capacity);
             Assert.Equal(4, glbstr.Size);
 
             glbstr.Resize(2);
 
-            Assert.Equal(2, glbstr.Capacity);
-            Assert.Equal(2, glbstr.Size);
+            Assert.Equal(2, glbstr.Data.Length);
         }
 
         [Fact]
@@ -154,5 +149,11 @@ namespace GenericTypes.Test
 
             Assert.Equal(actual, expected);
         }
+
+        /*
+        [Fact]
+        public void GenericListBaseZip() {
+        }
+        */
     }
 }
