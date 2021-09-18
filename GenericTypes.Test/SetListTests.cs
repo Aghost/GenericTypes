@@ -4,16 +4,16 @@ using GenericTypes.Core.Types;
 
 namespace GenericTypes.Test
 {
-    public class GenericListBaseTests
+    public class SetListTests
     {
         [Fact]
-        public void GenericListBaseConstructors() {
+        public void SetListConstructors() {
             // Assign
-            GenericListBase<int> glb = new();
-            GenericListBase<string> glb8 = new(8);
+            SetList<int> glb = new();
+            SetList<string> glb8 = new(8);
 
             string[] strarr = new string[] { "aap", "mies" };
-            GenericListBase<string> glbstr = new(strarr);
+            SetList<string> glbstr = new(strarr);
 
 
             // Act and Assert
@@ -28,11 +28,11 @@ namespace GenericTypes.Test
         }
 
         [Fact]
-        public void GenericListBaseAddAndContains() {
+        public void SetListAddAndContains() {
             // Assign
             int actual = -1;
             string[] strarr = new string[] { "one", "two", "three", "four", "five" };
-            GenericListBase<string> glbstr = new(strarr);
+            SetList<string> glbstr = new(strarr);
             glbstr.Add("six");
             glbstr.Add(new string[] { "seven", "eight" });
             // Act
@@ -45,10 +45,10 @@ namespace GenericTypes.Test
         }
         
         [Fact]
-        public void GenericListBaseResize() {
+        public void SetListResize() {
             // Assign
             string[] strarr = new string[] { "one", "two", "three", "four", "five" };
-            GenericListBase<string> glbstr = new(strarr);
+            SetList<string> glbstr = new(strarr);
 
             glbstr.Resize(4);
 
@@ -65,29 +65,29 @@ namespace GenericTypes.Test
         }
 
         [Fact]
-        public void GenericListBaseMinus() {
+        public void SetListMinus() {
             string[] strarr = new string[] { "one", "two", "three" };
             string[] strarr2 = new string[] { "one", "two", "six" };
 
-            GenericListBase<string> glbstr = new(strarr);
-            GenericListBase<string> glbstr2 = new(strarr2);
+            SetList<string> glbstr = new(strarr);
+            SetList<string> glbstr2 = new(strarr2);
 
-            GenericListBase<string> glbstr3a = glbstr2 - glbstr;
+            SetList<string> glbstr3a = glbstr2 - glbstr;
             string[] strarr3b = new string[] { "six" };
-            GenericListBase<string> glbstr3b = new(strarr3b);
+            SetList<string> glbstr3b = new(strarr3b);
             Assert.Equal(glbstr3a, glbstr3b);
 
-            GenericListBase<string> glbstr4a = glbstr - glbstr2;
+            SetList<string> glbstr4a = glbstr - glbstr2;
             string[] strarr4b = new string[] { "three" };
-            GenericListBase<string> glbstr4b = new(strarr4b);
+            SetList<string> glbstr4b = new(strarr4b);
             Assert.Equal(glbstr4a, glbstr4b);
         }
 
         [Fact]
-        public void GenericListBaseComparatorMethodsTests() {
+        public void SetListComparatorMethods() {
             int[] iarr = new int[] { 1, 2, 3 };
-            GenericListBase<int> glbi = new(iarr);
-            GenericListBase<int> glbi2 = new(glbi);
+            SetList<int> glbi = new(iarr);
+            SetList<int> glbi2 = new(glbi);
 
             Assert.Equal(glbi, glbi2);
 
@@ -106,19 +106,19 @@ namespace GenericTypes.Test
 
             expected = false;
             
-            GenericListBase<int> glbi3 = new();
+            SetList<int> glbi3 = new();
 
             bool isSuperset3 = glbi3 > glbi2;
             Assert.Equal(expected, isSuperset3);
         }
 
         [Fact]
-        public void GenericListBaseCarthesianProductTest() {
+        public void SetListCarthesianProduct() {
             string[] strarr = new string[] { "1", "2", "3" };
             string[] strarr2 = new string[] { "x", "y", "z" };
-            GenericListBase<string> glbstr = new(strarr); 
-            GenericListBase<string> glbstr2 = new(strarr2);
-            GenericListBase<GenericListBase<string>> glbstr3 = new(glbstr * glbstr2);
+            SetList<string> glbstr = new(strarr); 
+            SetList<string> glbstr2 = new(strarr2);
+            SetList<SetList<string>> glbstr3 = new(glbstr * glbstr2);
 
             string actual = "";
             foreach (var v in glbstr3) {
@@ -133,11 +133,11 @@ namespace GenericTypes.Test
         }
 
         [Fact]
-        public void GenericListBasePowerSet() {
+        public void SetListPowerSet() {
             string[] strarr = new string[] { "a", "b", "c" };
-            GenericListBase<string> glbstr = new(strarr);
+            SetList<string> glbstr = new(strarr);
 
-            GenericListBase<GenericListBase<string>> powerset = glbstr.PowerSet();
+            SetList<SetList<string>> powerset = glbstr.PowerSet();
             string actual = "";
             foreach(var v in powerset) {
                 foreach(var vv in v) {
@@ -152,7 +152,7 @@ namespace GenericTypes.Test
 
         /*
         [Fact]
-        public void GenericListBaseZip() {
+        public void SetListZip() {
         }
         */
     }

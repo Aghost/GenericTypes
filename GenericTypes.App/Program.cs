@@ -16,15 +16,46 @@ namespace GenericTypes.App
             CarthesianSetTests();
             AggregateSetTests();
             PowerSetTests();
+
+            SetStructTest();
             /*
             */
         }
 
+        static void SetStructTest() {
+            SetStruct<string> ls = new(4);
+            ls.Add("banaan");
+            ls.Add("banaan");
+            ls.Add("banaan");
+            ls.Add("banaan");
+            ls.Add("banaan");
+
+            WriteLine($"---1: ");
+            WriteLine($"{ls.Size}");
+            WriteLine($"{ls.Data.Length}");
+
+
+            SetStruct<string> ls2 = new(ls.Data);
+            ls2.Add("banaan");
+            ls2.Add("banaan");
+            ls2.Add("banaan");
+            ls2.Add("banaan");
+            ls2.Add("banaan");
+            ls2.Add("banaan");
+
+            WriteLine($"---2: ");
+            WriteLine($"{ls2.Size}");
+            WriteLine($"{ls2.Data.Length}");
+            foreach(string st in ls) { Write($"{st}"); }
+            WriteLine($"");
+            foreach(string st in ls2) { Write($"|{st} |"); }
+        }
+
         static void PowerSetTests() {
             string[] strarr = new string[] { "a", "b", "c" };
-            GenericListBase<string> glbs = new(strarr);
+            SetList<string> glbs = new(strarr);
 
-            GenericListBase<GenericListBase<string>> glglbs = glbs.PowerSet();
+            SetList<SetList<string>> glglbs = glbs.PowerSet();
             foreach(var v in glglbs) {
                 foreach (var vv in v) {
                     Write($"{vv}");
@@ -38,10 +69,10 @@ namespace GenericTypes.App
             string[] strarr = new string[] { "a", "b", "c" };
             string[] strarr2 = new string[] { "1", "2", "3" };
 
-            GenericListBase<string> glbs = new(strarr);
-            GenericListBase<string> glbs2 = new(strarr2);
+            SetList<string> glbs = new(strarr);
+            SetList<string> glbs2 = new(strarr2);
 
-            GenericListBase<GenericListBase<string>> glbglb = new(glbs ^ glbs2);
+            SetList<SetList<string>> glbglb = new(glbs ^ glbs2);
 
             foreach(var v in glbglb) {
                 foreach(string str in v) {
@@ -54,10 +85,10 @@ namespace GenericTypes.App
             /*
             int[] iarr = new int[] { 1,2,3 };
             int[] iarr2 = new int[] { 4,5,6 };
-            GenericListBase<int> glbi = new(iarr);
-            GenericListBase<int> glbi2 = new(iarr2);
+            SetList<int> glbi = new(iarr);
+            SetList<int> glbi2 = new(iarr2);
 
-            GenericListBase<GenericListBase<int>> glbglbi = new(glbi ^ glbi2);
+            SetList<SetList<int>> glbglbi = new(glbi ^ glbi2);
 
             foreach(var v in glbglbi) {
                 foreach(int i in v) {
@@ -84,8 +115,8 @@ namespace GenericTypes.App
             // STR
             string[] strarr = new string[] { "1", "2", "3" };
             string[] strarr2 = new string[] { "a", "b", "c" };
-            GenericListBase<string> glbs = new(strarr);
-            GenericListBase<string> glbs2 = new(strarr2);
+            SetList<string> glbs = new(strarr);
+            SetList<string> glbs2 = new(strarr2);
 
             Write($"set A: ");
             foreach(var v in strarr) { Write($"{v} "); }
@@ -95,7 +126,7 @@ namespace GenericTypes.App
             WriteLine();
             WriteLine();
 
-            GenericListBase<GenericListBase<string>> glbglb = new(glbs * glbs2);
+            SetList<SetList<string>> glbglb = new(glbs * glbs2);
 
             WriteLine("Carthesian Sets: ");
             foreach(var v in glbglb) {
@@ -109,8 +140,8 @@ namespace GenericTypes.App
             // INT
             int[] iarr = new int[] { 1,2,3 };
             int[] iarr2 = new int[] { 4,5,6 };
-            GenericListBase<int> glbi = new(iarr);
-            GenericListBase<int> glbi2 = new(iarr2);
+            SetList<int> glbi = new(iarr);
+            SetList<int> glbi2 = new(iarr2);
 
             Write($"set A: ");
             foreach(var v in iarr) { Write($"{v} "); }
@@ -120,7 +151,7 @@ namespace GenericTypes.App
             WriteLine();
             WriteLine();
 
-            GenericListBase<GenericListBase<int>> glbglbi = new(glbi * glbi2);
+            SetList<SetList<int>> glbglbi = new(glbi * glbi2);
 
             WriteLine("Carthesian Sets: ");
             foreach(var v in glbglbi) {
@@ -135,8 +166,8 @@ namespace GenericTypes.App
             string[] strarr = new string[] { "one", "two", "three" };
             string[] strarr2 = new string[] { "two", "three", "four" };
 
-            GenericListBase<string> glbs = new(strarr);
-            GenericListBase<string> glbs2 = new(strarr2);
+            SetList<string> glbs = new(strarr);
+            SetList<string> glbs2 = new(strarr2);
 
             foreach(var v in glbs - glbs2) {
                 WriteLine(v);
@@ -145,8 +176,8 @@ namespace GenericTypes.App
 
         static void TestListBase3() {
             string[] strarr = new string[] { "one", "two", "three", "four", "five" };
-            GenericListBase<string> glbs = new(strarr);
-            GenericListBase<string> glbs2 = new(glbs);
+            SetList<string> glbs = new(strarr);
+            SetList<string> glbs2 = new(glbs);
 
             WriteLine(glbs == glbs2);
             glbs.Add("six");
@@ -161,7 +192,7 @@ namespace GenericTypes.App
 
         static void TestListBase2() {
             string[] strarr = new string[] { "one", "two", "three", "four", "five" };
-            GenericListBase<string> glbs = new(strarr);
+            SetList<string> glbs = new(strarr);
 
             WriteLine($"cap: {glbs.Data.Length} size: {glbs.Size}");
             if (glbs.Contains("five", out int position)) { WriteLine($"five @ {position}"); }
@@ -171,7 +202,7 @@ namespace GenericTypes.App
 
         static void TestListBase() {
             // INTS
-            GenericListBase<int> glbi = new();
+            SetList<int> glbi = new();
             WriteLine($"cap: {glbi.Data.Length} size: {glbi.Size}");
             glbi.Add(1);
             glbi.Add(2);
@@ -185,7 +216,7 @@ namespace GenericTypes.App
             foreach(int i in glbi) { WriteLine($"{i}"); }
 
             // STRINGS
-            GenericListBase<string> glbs = new();
+            SetList<string> glbs = new();
             WriteLine($"cap: {glbs.Data.Length} size: {glbs.Size}");
             glbs.Add("one");
             glbs.Add("two");
@@ -203,7 +234,7 @@ namespace GenericTypes.App
             WriteLine("------");
 
             foreach(string s in glbs) { WriteLine($"{s}"); }
-            GenericListBase<string> glbcombined = new(glbs + glbs);
+            SetList<string> glbcombined = new(glbs + glbs);
             WriteLine("------");
             foreach(string s in glbcombined) { WriteLine($"{s}"); }
             glbcombined.Add("banaan");
@@ -228,7 +259,7 @@ namespace GenericTypes.App
             WriteLine("---set2");
             foreach(string s in glbs) { WriteLine($"{s}"); }
             WriteLine("---result");
-            GenericListBase<string> glbsminus = glbs - glbcombined;
+            SetList<string> glbsminus = glbs - glbcombined;
             foreach(string s in glbsminus) { WriteLine($"{s}"); }
 
             if (glbsminus < glbcombined) {
@@ -239,7 +270,7 @@ namespace GenericTypes.App
                 foreach(string s in glbcombined) { WriteLine($"{s}"); }
             }
 
-            GenericListBase<int> glbi2 = new(glbi);
+            SetList<int> glbi2 = new(glbi);
             WriteLine(glbi == glbi2);
             glbi2.Add(new int[] { 5, 6, 7, 8 });
             WriteLine(glbi == glbi2);

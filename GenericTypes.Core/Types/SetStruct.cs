@@ -6,20 +6,21 @@ using static System.Console;
 
 namespace GenericTypes.Core.Types
 {
-    public class GenericListBase<T> : IEnumerable<T> {
+    public struct SetStruct<T> : IEnumerable<T> {
         public T[] Data     { get; private set;}
         public int Size     { get; private set;}
 
-        public GenericListBase(T[] data) {
+        public SetStruct(int initCapacity) {
+            Data = new T[initCapacity];
+            Size = 0;
+        }
+
+        public SetStruct(T[] data) {
             Data = data;
             Size = data.Length;
         }
 
-        public GenericListBase(int initCapacity = 4) {
-            Data = new T[initCapacity];
-        }
-
-        public GenericListBase(GenericListBase<T> set) {
+        public SetStruct(SetStruct<T> set) {
             Data = set.ToArray();
             Size = set.Size;
         }
@@ -114,10 +115,10 @@ namespace GenericTypes.Core.Types
             if (this.GetType() != obj.GetType())
                 return false;
 
-            return ValueEquals((GenericListBase<T>)obj);
+            return ValueEquals((SetStruct<T>)obj);
         }
 
-        public bool ValueEquals(GenericListBase<T> set) {
+        public bool ValueEquals(SetStruct<T> set) {
             if (this.Size != set.Size)
                 return false;
 
@@ -129,26 +130,26 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
-        public static bool operator ==(GenericListBase<T> setA, Object setB) => setA.Equals(setB);
-        public static bool operator !=(GenericListBase<T> setA, Object setB) => !(setA == setB);
+        public static bool operator ==(SetStruct<T> setA, Object setB) => setA.Equals(setB);
+        public static bool operator !=(SetStruct<T> setA, Object setB) => !(setA == setB);
 
         // UNION: set of all objects in A and B
-        public static GenericListBase<T> operator +(GenericListBase<T> setA, GenericListBase<T> setB) {
+        public static SetStruct<T> operator +(SetStruct<T> setA, SetStruct<T> setB) {
             if (setA.Size == 0) { return setB; }
             if (setB.Size == 0) { return setA; }
 
-            GenericListBase<T> newList = new(setA.ToArray());
+            SetStruct<T> newList = new(setA.ToArray());
             newList.Add(setB.ToArray());
 
             return newList;
         }
 
         // COMPLEMENT / SET DIFFERENCE: set of all objects that are not members of A
-        public static GenericListBase<T> operator -(GenericListBase<T> setA, GenericListBase<T> setB) {
+        public static SetStruct<T> operator -(SetStruct<T> setA, SetStruct<T> setB) {
             if (setA.Size == 0) { return setB; }
             if (setB.Size == 0) { return setA; }
 
-            GenericListBase<T> newlist = new();
+            SetStruct<T> newlist = new();
 
             foreach (T item in setA) {
                 // uncomment to only add unique items!
@@ -161,8 +162,8 @@ namespace GenericTypes.Core.Types
         }
 
         // INTERSECTION: the set of all objects that are members of both A and B
-        public static GenericListBase<T> operator /(GenericListBase<T> setA, GenericListBase<T> setB) {
-            GenericListBase<T> newlist = new();
+        public static SetStruct<T> operator /(SetStruct<T> setA, SetStruct<T> setB) {
+            SetStruct<T> newlist = new();
 
             if (setB.Size == 0) 
                 return newlist;
@@ -176,7 +177,7 @@ namespace GenericTypes.Core.Types
         }
 
         // IS LHS SUBSET OF RHS
-        public static bool operator <(GenericListBase<T> setA, GenericListBase<T> setB) {
+        public static bool operator <(SetStruct<T> setA, SetStruct<T> setB) {
             if (setA.Size > setB.Size)
                 return false;
 
@@ -189,7 +190,7 @@ namespace GenericTypes.Core.Types
         }
 
         // IS LHS SUPERSET OF RHS
-        public static bool operator >(GenericListBase<T> setA, GenericListBase<T> setB) {
+        public static bool operator >(SetStruct<T> setA, SetStruct<T> setB) {
             if (setB.Size > setA.Size)
                 return false;
 
@@ -202,12 +203,12 @@ namespace GenericTypes.Core.Types
         }
 
         // CARTESIAN PRODUCT
-        public static GenericListBase<GenericListBase<T>> operator *(GenericListBase<T> setA, GenericListBase<T> setB) {
-            GenericListBase<GenericListBase<T>> result = new();
+        public static SetStruct<SetStruct<T>> operator *(SetStruct<T> setA, SetStruct<T> setB) {
+            SetStruct<SetStruct<T>> result = new();
 
             foreach(T lht in setA) {
                 foreach(T rht in setB) {
-                    GenericListBase<T> tmpresult = new();
+                    SetStruct<T> tmpresult = new();
                     tmpresult.Add(rht);
                     tmpresult.Add(lht);
                     result.Add(tmpresult);
@@ -218,11 +219,11 @@ namespace GenericTypes.Core.Types
         }
 
         // POWERSET
-        public GenericListBase<GenericListBase<T>> PowerSet() {
-            GenericListBase<GenericListBase<T>> result = new();
+        public SetStruct<SetStruct<T>> PowerSet() {
+            SetStruct<SetStruct<T>> result = new();
 
             for (int i = 0; i < (1 << Size); i++) {
-                GenericListBase<T> sublist = new();
+                SetStruct<T> sublist = new();
 
                 for (int j = 0; j < Size; j++) {
                     if ((i & (1 << j)) != 0) {
@@ -237,11 +238,11 @@ namespace GenericTypes.Core.Types
         }
 
         // ZIP ???
-        public static GenericListBase<GenericListBase<T>> operator ^(GenericListBase<T> setA, GenericListBase<T> setB) {
-            GenericListBase<GenericListBase<T>> result = new();
+        public static SetStruct<SetStruct<T>> operator ^(SetStruct<T> setA, SetStruct<T> setB) {
+            SetStruct<SetStruct<T>> result = new();
 
             foreach(T lht in setA) {
-                GenericListBase<T> tmpresult = new();
+                SetStruct<T> tmpresult = new();
                 tmpresult.Add(lht);
 
                 foreach(T rht in setB) {
