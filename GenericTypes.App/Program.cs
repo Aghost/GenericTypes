@@ -8,18 +8,18 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
+            /*
             TestListBase();
             TestListBase2();
             TestListBase3();
             SetTests();
-            LinkedListTests();
             CarthesianSetTests();
             AggregateSetTests();
             PowerSetTests();
 
             SetStructTest();
-            /*
             */
+            LinkedListTests();
         }
 
         static void SetStructTest() {
@@ -100,15 +100,35 @@ namespace GenericTypes.App
         }
 
         static void LinkedListTests() {
-            GenericLinkedList<string> gll = new();
-            gll.AddHead("banaan");
-            gll.AddHead("appel");
-            gll.AddHead("gordijn");
-            //gll.InsertAt("paard", 2);
+            CLinkedList<string> cll = new();
+            cll.AddHead("banaan");
+            cll.AddHead("appel");
+            cll.AddHead("gordijn");
+            //cll.InsertAt("paard", 2);
 
-            foreach(var v in gll) {
+            foreach(var v in cll) {
                 WriteLine($"{v}");
             }
+
+            if (cll.Contains("banaan")) {
+                WriteLine("yes i contain banaan");
+            }
+
+            if (cll.Contains("gordijn")) {
+                WriteLine($"yes i contain gordijn");
+            }
+
+            cll.InsertAt("henk", 2);
+            if (cll.Contains("henk")) {
+                WriteLine($"yes i contain henk");
+            }
+
+            string[] tmp = cll.ToArray();
+
+            WriteLine($"-------------");
+            foreach(string str in cll) { WriteLine(str); }
+            CLinkedList<int> cll2 = new();
+            WriteLine($"{cll2.Count()}");
         }
 
         static void CarthesianSetTests() {
