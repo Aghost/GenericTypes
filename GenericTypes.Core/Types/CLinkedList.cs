@@ -53,13 +53,26 @@ namespace GenericTypes.Core.Types
             return true;
         }
 
-        // TODO FIX
-        public void InsertAt(T data, int i) {
-            if (i < 0 || i >= Count()) {
-                return;
+        public bool Contains(T data, out int position) {
+            CLinkedListNode current = Head;
+            position = 0;
+
+            while (!current.Data.Equals(data)) {
+                if (current.Next == null)
+                    return false;
+
+                position++;
+                current = current.Next;
             }
 
+            return true;
+        }
+
+        public void InsertAt(T data, int i) {
+            //if (i < 0 || i >= Count()) { return; }
+
             CLinkedListNode current = Head;
+
             while (i != 0) {
                 current = current.Next;
                 i--;
@@ -80,7 +93,6 @@ namespace GenericTypes.Core.Types
             CLinkedListNode current = Head;
  
             while (current.Next != null) {
-                Console.WriteLine($"{current.Data}");
                 current = current.Next;
                 i++;
             }
@@ -91,8 +103,6 @@ namespace GenericTypes.Core.Types
         public T[] ToArray() {
             CLinkedListNode current = Head;
             int len = Count();
-
-            Console.WriteLine($"{len} test");
 
             T[] values = new T[len];
 
@@ -105,6 +115,17 @@ namespace GenericTypes.Core.Types
 
             return values;
         }
+
+        /*
+        public void Delete(T element) {
+            CLinkedListNode current = Head;
+
+            while (current.Next != null) {
+        }
+
+        public void DeleteAt(int position) {
+        }
+        */
 
         public bool IsEmpty() {
             return Head == null;

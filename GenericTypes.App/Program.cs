@@ -100,11 +100,15 @@ namespace GenericTypes.App
         }
 
         static void LinkedListTests() {
+            CLinkedList<int> cll2 = new();
+            WriteLine($"{cll2.Count()}");
+
             CLinkedList<string> cll = new();
             cll.AddHead("banaan");
             cll.AddHead("appel");
             cll.AddHead("gordijn");
             //cll.InsertAt("paard", 2);
+            //
 
             foreach(var v in cll) {
                 WriteLine($"{v}");
@@ -124,11 +128,13 @@ namespace GenericTypes.App
             }
 
             string[] tmp = cll.ToArray();
-
             WriteLine($"-------------");
-            foreach(string str in cll) { WriteLine(str); }
-            CLinkedList<int> cll2 = new();
-            WriteLine($"{cll2.Count()}");
+
+            if (cll.Contains("henk", out int position)) {
+                WriteLine($"1 yes i have henk at position {position}");
+                WriteLine($"2 cll.Toarray[position] = {cll.ToArray()[position]}");
+                WriteLine($"3 array tmp[position] = {tmp[position]}");
+            }
         }
 
         static void CarthesianSetTests() {
