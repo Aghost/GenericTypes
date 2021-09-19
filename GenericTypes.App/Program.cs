@@ -18,8 +18,19 @@ namespace GenericTypes.App
             PowerSetTests();
 
             SetStructTest();
-            */
             LinkedListTests();
+            */
+            CEnumerableTest();
+        }
+
+        static void CEnumerableTest() {
+            string[] data = new string[] { "a", "b", "c" };
+            //GenericEnumerable<string> cen = new(data);
+            CEnumerable<string> cen = new(data);
+
+            foreach (string str in cen) {
+                WriteLine(str);
+            }
         }
 
         static void SetStructTest() {
