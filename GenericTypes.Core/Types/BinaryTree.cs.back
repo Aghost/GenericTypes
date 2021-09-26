@@ -1,0 +1,226 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace GenericTypes.Core.Types
+{
+    public class BinaryTree<T>
+    {
+        Node<T> root;
+
+        public BinaryTree(T data) {
+            root = new Node<T>(data);
+        }
+
+        public void Insert(T data) {
+            if (root != null) {
+                root.Insert(data);
+            } else {
+                root = new Node<T>(data);
+            }
+        }
+
+        public Node<T> Find(T data) {
+            return root != null ? root.Find(data) : null;
+        }
+
+        // O(Log n)
+        public Node<T> FindRecursive(T data) {
+            return root != null ? root.FindRecursive(data) : null;
+        }
+
+        public void Remove(T data) {
+            Node<T> current = root;
+            Node<T> parent = root;
+            bool isLeft = false;
+
+            if (current == null) {
+                return;
+            }
+
+            while (current != null && current.data != data) {
+                parent = current;
+
+                if (data < current.data) {
+                    current = current.left;
+                    isLeft = true;
+                } else {
+                    current = current.right;
+                    isLeft = false;
+                }
+            }
+
+            if (current == null) {
+                return;
+            }
+
+            // check if left or right child node
+            if (current.right == null && current.left == null) {
+                if (current == root) {
+                    root = null;
+                } else {
+                    if (isLeft) {
+                        parent.left = null;
+                    } else {
+                        parent.right = null;
+                    }
+                }
+            } else if (current.right == null) {
+                if (current == root) {
+                    root = current.left;
+                } else {
+                    if (isLeft) {
+                        parent.left = current.left;
+                    } else {
+                        parent.right = current.left;
+                    }
+                }
+            } else if (current.left == null) {
+                if (current == root) {
+                    root = current.right;
+                } else {
+                    if (isLeft) {
+                        parent.left = current.right;
+                    } else {
+                        parent.right = current.right;
+                    }
+                }
+            } else {
+                Node<T> successor = GetSuccessor(current);
+
+                if (current == root) {
+                    root = successor;
+                } else if (isLeft) {
+                    parent.left = successor;
+                } else {
+                    parent.right = successor;
+                }
+            }
+
+        }
+
+        public List<T> InOrder() {
+            var orderList = new List<T>();
+            if (root != null) { root.InOrder(orderList); }
+            return orderList;
+        }
+        
+        public List<T> PreOrder() {
+            var orderList = new List<T>();
+            if (root != null) { root.PreOrder(orderList); }
+
+            return orderList;
+        }
+
+        public List<T> PostOrder() {
+            var orderList = new List<T>();
+            if (root != null) { root.PostOrder(orderList); }
+
+            return orderList;
+        }
+
+        private Node<T> GetSuccessor(Node<T> node) {
+            Node<T> sParent = node;
+            Node<T> successor = node;
+            Node<T> current = node.right;
+
+            while (current != null) {
+                sParent = successor;
+                successor = sParent;
+                current = current.left;
+            }
+
+            if (successor != node.right) {
+                sParent.left = successor.right;
+                successor.right = node.right;
+            }
+
+            successor.left = node.left;
+
+            return successor;
+        }
+    }
+
+    public class Node<T> {
+        public Node<T> left = null;
+        public Node<T> right = null;
+        public T data;
+
+        public Node(T data) {
+            this.data = data;
+        }
+
+        public void Insert(T data) {
+            if (data >= this.data) {
+                if (right == null) {
+                    right = new Node<T>(data);
+                } else {
+                    right.Insert(data);
+                }
+            } else {
+                if (left == null) {
+                    left = new Node<T>(data);
+                } else {
+                    left.Insert(data);
+                }
+            }
+        }
+
+        public Node<T> Find(T data) {
+            Node<T> current = this;
+
+            while (current != null) {
+                if (data == current.data) {
+                    return current;
+                } else if (data > current.data) {
+                    current = current.right;
+                } else {
+                    current = current.left;
+                }
+            }
+
+            return null;
+        }
+
+        public Node<T> FindRecursive(T data) {
+            if (data == this.data) {
+                return this;
+            } else if (data < this.data && left != null) {
+                return left.FindRecursive(data);
+            } else if (right != null) {
+                return right.FindRecursive(data);
+            } else {
+                return null;
+            }
+        }
+
+        public List<T> PrintOrder(int order) {
+            List<T> orderList = new();
+
+            switch(order) {
+                case 0: InOrder(orderList); break;
+                case 1: PreOrder(orderList); break;
+                case 2: PostOrder(orderList); break;
+                default: break;
+            }
+            return orderList;
+        }
+
+        public void InOrder(List<T> list) {
+            if (left != null) { left.InOrder(list); }
+            list.Add(data);
+            if (right != null) { right.InOrder(list); }
+        }
+
+        public void PreOrder(List<T> list) {
+            list.Add(data);
+            if (left != null) { left.PreOrder(list); }
+            if (right != null) { right.PreOrder(list); }
+        }
+
+        public void PostOrder(List<T> list) {
+            if (left != null) { left.PostOrder(list); }
+            if (right != null) { right.PostOrder(list); }
+            list.Add(data);
+        }
+    }
+}
