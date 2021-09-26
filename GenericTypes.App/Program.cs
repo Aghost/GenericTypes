@@ -8,58 +8,57 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
+            SetStructTest();
             /*
+            SetTests();
             TestListBase();
             TestListBase2();
             TestListBase3();
-            SetTests();
             CarthesianSetTests();
             AggregateSetTests();
             PowerSetTests();
 
-            SetStructTest();
             LinkedListTests();
-            */
             CEnumerableTest();
+            */
         }
 
         static void CEnumerableTest() {
-            string[] data = new string[] { "a", "b", "c" };
-            //GenericEnumerable<string> cen = new(data);
-            CEnumerable<string> cen = new(data);
+            //string[] data = new string[] { "a", "b", "c" };
+            //CEnumerable<string> cen = new(data);
 
-            foreach (string str in cen) {
-                WriteLine(str);
+            int[] data = new int[] { 1,2,3 } ;
+            CEnumerable<int> cen = new(data);
+
+            foreach (var item in cen) {
+                WriteLine(item);
             }
         }
 
         static void SetStructTest() {
             SetStruct<string> ls = new(4);
-            ls.Add("banaan");
-            ls.Add("banaan");
-            ls.Add("banaan");
-            ls.Add("banaan");
-            ls.Add("banaan");
-
+            ls.Add("one");
+            ls.Add("two");
             WriteLine($"---1: ");
             WriteLine($"{ls.Size}");
             WriteLine($"{ls.Data.Length}");
 
-
             SetStruct<string> ls2 = new(ls.Data);
-            ls2.Add("banaan");
-            ls2.Add("banaan");
-            ls2.Add("banaan");
-            ls2.Add("banaan");
-            ls2.Add("banaan");
-            ls2.Add("banaan");
-
+            ls2.Add("ONE");
+            ls2.Add("TWO");
             WriteLine($"---2: ");
             WriteLine($"{ls2.Size}");
             WriteLine($"{ls2.Data.Length}");
+
+            WriteLine("--------");
             foreach(string st in ls) { Write($"{st}"); }
-            WriteLine($"");
+            WriteLine();
             foreach(string st in ls2) { Write($"|{st} |"); }
+            WriteLine();
+
+            ls2.DeleteAt(1);
+            foreach(string st in ls2) { Write($"|{st} |"); }
+            WriteLine();
         }
 
         static void PowerSetTests() {
@@ -209,6 +208,15 @@ namespace GenericTypes.App
             foreach(var v in glbs - glbs2) {
                 WriteLine(v);
             }
+
+            WriteLine($"---");
+
+            foreach(var v in glbs) { WriteLine(v); }
+            glbs.Delete("two");
+            glbs.DeleteAt(2);
+            WriteLine($"---");
+            foreach(var v in glbs) { WriteLine(v); }
+            glbs.DeleteAt(5);
         }
 
         static void TestListBase3() {

@@ -64,6 +64,21 @@ namespace GenericTypes.Core.Types
             return false;
         }
 
+        public void Delete(T element) {
+            if (Contains(element, out int position)) {
+                DeleteAt(position);
+            }
+        }
+
+        public void DeleteAt(int position) {
+            for (int i = position; i < Size - 1; i++) {
+                Data[i] = Data[i + 1];
+            }
+
+            Data[Size - 1] = default(T);
+            Size--;
+        }
+
         private void Resize() {
             T[] resized = new T[Data.Length * 2];
 
