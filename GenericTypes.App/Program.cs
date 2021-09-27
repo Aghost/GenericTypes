@@ -8,8 +8,9 @@ namespace GenericTypes.App
     class Program
     {
         static void Main(string[] args) {
-            SetStructTest();
+            LinkedListTests();
             /*
+            SetStructTest();
             SetTests();
             TestListBase();
             TestListBase2();
@@ -18,7 +19,6 @@ namespace GenericTypes.App
             AggregateSetTests();
             PowerSetTests();
 
-            LinkedListTests();
             CEnumerableTest();
             */
         }
@@ -117,8 +117,6 @@ namespace GenericTypes.App
             cll.AddHead("banaan");
             cll.AddHead("appel");
             cll.AddHead("gordijn");
-            //cll.InsertAt("paard", 2);
-            //
 
             foreach(var v in cll) {
                 WriteLine($"{v}");
@@ -144,6 +142,16 @@ namespace GenericTypes.App
                 WriteLine($"1 yes i have henk at position {position}");
                 WriteLine($"2 cll.Toarray[position] = {cll.ToArray()[position]}");
                 WriteLine($"3 array tmp[position] = {tmp[position]}");
+            }
+
+            WriteLine("---");
+            foreach (var v in cll) {
+                WriteLine(v);
+            }
+            cll.Delete(2);
+            WriteLine("---");
+            foreach (var v in cll) {
+                WriteLine(v);
             }
         }
 

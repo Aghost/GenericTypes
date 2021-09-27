@@ -100,6 +100,26 @@ namespace GenericTypes.Core.Types
             return i;
         }
 
+        public void Delete(int position) {
+            if (Head == null) { return; }
+            
+            CLinkedListNode current = Head;
+            if (position == 0) {
+                Head = current.Next;
+                return;
+            }
+
+            for (int i = 0; current != null && i < position - 1; i++) {
+                current = current.Next;
+            }
+
+            if (current == null || current.Next == null)
+                return;
+
+            CLinkedListNode next= current.Next.Next;
+            current.Next = next;
+        }
+
         public T[] ToArray() {
             CLinkedListNode current = Head;
             int len = Count();
@@ -115,17 +135,6 @@ namespace GenericTypes.Core.Types
 
             return values;
         }
-
-        /*
-        public void Delete(T element) {
-            CLinkedListNode current = Head;
-
-            while (current.Next != null) {
-        }
-
-        public void DeleteAt(int position) {
-        }
-        */
 
         public bool IsEmpty() {
             return Head == null;

@@ -5,4 +5,3 @@ TODO:
 - Binary tree -> generic nodes are not equatable
 - Graph -> fix... nodes
 - make generic node?
-- use (value)tuples
